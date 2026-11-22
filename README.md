@@ -35,6 +35,11 @@ python -m site_screen.research_cli \
   --input data/synthetic_process_sites.json \
   --output results/v1_process_screen.json \
   --scenarios
+
+# Human-readable research report accompanying reproducible JSON
+python -m site_screen.report \
+  --input results/v1_process_screen.json \
+  --output results/v1_research_summary.md
 ```
 
 The v1.0 fixture contains three explicitly **synthetic** sites with independent waste-heat streams and 162 predeclared scenario combinations. CI tests both Python 3.11 and 3.12, validates first-law/process balances, retains rejection cases and checks JSON byte-for-byte determinism.
