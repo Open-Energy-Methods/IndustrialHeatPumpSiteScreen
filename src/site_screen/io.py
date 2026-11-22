@@ -6,10 +6,7 @@ from pathlib import Path
 from .model import Site
 
 _FIELDS = {field.name: field for field in fields(Site)}
-_REQUIRED = tuple(k for k, f in _FIELDS.items()
-                  if f.default is f.default_factory and k != "site_id")
-# For this version, compare against a fully explicit set instead of
-# depending on dataclasses' implementation-specific default markers.
+# Required columns are defined explicitly for a stable CSV input contract.
 REQUIRED = (
     "site_id", "source_supply_C", "source_return_C",
     "source_flow_kg_s", "process_return_C", "process_supply_C",
