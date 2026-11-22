@@ -1,0 +1,43 @@
+name: v0.1 source and thermoeconomic audit
+
+on:
+  push:
+    branches: [main, feat/**]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deterministic-site-screen:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install project
+        run: python -m pip install -e .
+      - name: Independent equations and negative tests
+        run: python -m unittest discover -s tests -v
+      - name: Reproduce synthetic case screen
+        run: python -m site_screen.cli data/synthetic_sites.csv --output results/synthetic_screen.json
+      - name: Check evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("results/synthetic_screen.json"))
+          assert r["input_site_count"]==6
+          assert all(z["research_only"] and not z["experimentally_validated"] for z in r["results"])
+          assert any(z["status"]=="rejected" for z in r["results"])
+          assert any(z["status"]=="source_limited_proxy" for z in r["results"])
+          print("Synthetic dataset, evidence labels and rejected cases verified")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preliminary-synthetic-screen-py${{ matrix.python-version }}
+          path: results/synthetic_screen.json
+          if-no-files-found: error
