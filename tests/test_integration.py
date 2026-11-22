@@ -7,7 +7,7 @@ from site_screen.integration import Source,TariffBlock,ProcessSite,evaluate_site
 def site(*,blocks=None,hot=True,source_cap=10.,capacity=500.,aux_frac=.05,aux_kW=0.):
     streams=(ProcessStream("process feed","cold",100,160,5),)
     if hot:
-        streams+=(ProcessStream("recovered hot","hot",100,70,2.),)
+        streams+=(ProcessStream("recovered hot","hot",200,70,2.),)
     return ProcessSite(site_id="synthetic",streams=streams,
         independent_source=Source(90,60,source_cap),
         tariff_blocks=blocks or (
