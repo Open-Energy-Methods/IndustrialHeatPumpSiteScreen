@@ -8,7 +8,7 @@ from site_screen.model import Site, screen_site
 
 def sample(**overrides):
     base = dict(site_id="synthetic_unit",source_supply_C=80,
-        source_return_C=60,source_flow_kg_s=5,
+        source_return_C=60,source_flow_kg_s=8,
         process_return_C=110,process_supply_C=150,
         process_demand_kW=1000,operating_hours_per_year=5000,
         electricity_eur_per_kWh=0.08,boiler_fuel_eur_per_kWh=0.10,
