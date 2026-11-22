@@ -1,0 +1,7 @@
+site_id,source_supply_C,source_return_C,source_flow_kg_s,process_return_C,process_supply_C,process_demand_kW,operating_hours_per_year,electricity_eur_per_kWh,boiler_fuel_eur_per_kWh,boiler_efficiency,assumed_carnot_fraction,discount_rate,lifetime_years,incremental_opex_eur_per_year
+Synthetic_Food_Processing,80,60,5,110,150,1000,5000,0.08,0.10,0.90,0.45,0.08,15,12000
+Synthetic_Chemical_Source_Limited,70,50,1,90,180,2000,6500,0.20,0.07,0.88,0.45,0.08,15,15000
+Synthetic_Pulp_Recovery,110,85,8,120,165,1000,7000,0.09,0.11,0.92,0.45,0.06,20,24000
+Synthetic_High_Lift_Ceramics,55,35,2,170,250,800,4200,0.20,0.06,0.89,0.45,0.10,12,15000
+Synthetic_Dairy_Low_Source_Flow,45,30,0.5,70,150,500,6000,0.12,0.08,0.90,0.45,0.08,15,5000
+Synthetic_Paper_Weak_COP,55,35,3,120,220,900,5500,0.15,0.07,0.90,0.28,0.08,15,9000
