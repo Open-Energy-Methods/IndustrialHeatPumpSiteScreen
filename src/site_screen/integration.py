@@ -208,11 +208,11 @@ def evaluate_site(site:ProcessSite)->dict:
         fraction_external_heating_electrified=electrification,
         process_heat_balance_verified=all(abs(x["heat_supply_balance_residual_kW"])<1e-8 for x in rows),
         source_heat_balance_verified=all(abs(x["heat_pump_energy_residual_kW"])<1e-8 for x in rows),
-        tariff_schedule_has_no_chronological_storage=False,
+        tariff_blocks_are_nonchronological=True,
         chronological_thermal_storage_modeled=False,
         cost_optimisation_scope="independent-block HP on/off with unchanged boiler backup",
         process_HEN_built_or_capex_priced=False,
         baseline_assumes_ideal_process_heat_recovery=True,
         compressor_qualified=False,industrial_validation=False,
-        all_inputs_synthetic=True,
+        data_provenance="synthetic" ,
         manufacturer_CAPEX_known=False)
