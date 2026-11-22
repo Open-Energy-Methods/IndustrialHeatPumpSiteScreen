@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If using the research screening source, cite the repository version and disclose its synthetic, experimentally unvalidated status."
+type: software
+title: "IndustrialHeatPumpSiteScreen: preliminary industrial heat-pump process integration and economic screening"
+authors:
+  - family-names: Sivaprasadan
+    given-names: Abhijith
+version: 1.0.0
+date-released: 2026-11-22
+repository-code: "https://github.com/Open-Energy-Methods/IndustrialHeatPumpSiteScreen"
+license: MIT
+keywords:
+  - industrial high-temperature heat pumps
+  - pinch analysis
+  - thermoeconomic screening
+  - synthetic research

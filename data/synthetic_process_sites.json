@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "data_provenance": "synthetic",
+  "sites": [
+    {
+      "site_id": "Synthetic_Paper_Drying",
+      "streams": [
+        {
+          "name": "dryer_exhaust_after_recovery",
+          "kind": "hot",
+          "supply_C": 155,
+          "target_C": 75,
+          "heat_capacity_rate_kW_K": 2.8
+        },
+        {
+          "name": "process_feed",
+          "kind": "cold",
+          "supply_C": 45,
+          "target_C": 145,
+          "heat_capacity_rate_kW_K": 5.5
+        },
+        {
+          "name": "wash_water",
+          "kind": "cold",
+          "supply_C": 30,
+          "target_C": 95,
+          "heat_capacity_rate_kW_K": 1.4
+        }
+      ],
+      "independent_source": {
+        "supply_C": 90,
+        "return_C": 55,
+        "capacity_rate_kW_K": 10
+      },
+      "tariff_blocks": [
+        {
+          "name": "low_price",
+          "hours": 2500,
+          "electricity_eur_kWh": 0.055,
+          "load_fraction": 1,
+          "source_fraction": 1
+        },
+        {
+          "name": "mid_price",
+          "hours": 3000,
+          "electricity_eur_kWh": 0.12,
+          "load_fraction": 0.85,
+          "source_fraction": 0.8
+        },
+        {
+          "name": "high_price",
+          "hours": 1200,
+          "electricity_eur_kWh": 0.24,
+          "load_fraction": 0.65,
+          "source_fraction": 0.7
+        }
+      ],
+      "boiler_efficiency": 0.88,
+      "fuel_eur_kWh": 0.095,
+      "incremental_fixed_opex_eur_year": 11000,
+      "hp_nameplate_kW": 600,
+      "heat_pump_carnot_fraction": 0.45,
+      "pinch_dt_min_K": 10
+    },
+    {
+      "site_id": "Synthetic_Chemical_Batch",
+      "streams": [
+        {
+          "name": "reactor_cooling",
+          "kind": "hot",
+          "supply_C": 125,
+          "target_C": 60,
+          "heat_capacity_rate_kW_K": 2.5
+        },
+        {
+          "name": "process_reheat",
+          "kind": "cold",
+          "supply_C": 75,
+          "target_C": 185,
+          "heat_capacity_rate_kW_K": 4
+        }
+      ],
+      "independent_source": {
+        "supply_C": 75,
+        "return_C": 45,
+        "capacity_rate_kW_K": 4
+      },
+      "tariff_blocks": [
+        {
+          "name": "first_shift",
+          "hours": 2300,
+          "electricity_eur_kWh": 0.095,
+          "load_fraction": 1,
+          "source_fraction": 1
+        },
+        {
+          "name": "second_shift",
+          "hours": 1800,
+          "electricity_eur_kWh": 0.19,
+          "load_fraction": 0.6,
+          "source_fraction": 0.5
+        }
+      ],
+      "boiler_efficiency": 0.91,
+      "fuel_eur_kWh": 0.1,
+      "incremental_fixed_opex_eur_year": 12500,
+      "hp_nameplate_kW": 350,
+      "heat_pump_carnot_fraction": 0.45,
+      "pinch_dt_min_K": 12
+    },
+    {
+      "site_id": "Synthetic_Internal_Recovery_Dominant",
+      "streams": [
+        {
+          "name": "hot_product",
+          "kind": "hot",
+          "supply_C": 210,
+          "target_C": 100,
+          "heat_capacity_rate_kW_K": 3
+        },
+        {
+          "name": "cold_raw",
+          "kind": "cold",
+          "supply_C": 60,
+          "target_C": 150,
+          "heat_capacity_rate_kW_K": 2
+        }
+      ],
+      "independent_source": {
+        "supply_C": 95,
+        "return_C": 70,
+        "capacity_rate_kW_K": 5
+      },
+      "tariff_blocks": [
+        {
+          "name": "all_hours",
+          "hours": 5500,
+          "electricity_eur_kWh": 0.08,
+          "load_fraction": 1,
+          "source_fraction": 1
+        }
+      ],
+      "boiler_efficiency": 0.9,
+      "fuel_eur_kWh": 0.08,
+      "hp_nameplate_kW": 250,
+      "heat_pump_carnot_fraction": 0.45,
+      "pinch_dt_min_K": 10
+    }
+  ],
+  "sensitivity": {
+    "hp_nameplates_kW": [
+      250,
+      500,
+      1000
+    ],
+    "carnot_fractions": [
+      0.35,
+      0.45,
+      0.55
+    ],
+    "electricity_price_multipliers": [
+      0.75,
+      1,
+      1.25
+    ],
+    "pinch_dt_min_K": [
+      10,
+      20
+    ]
+  }
+}
