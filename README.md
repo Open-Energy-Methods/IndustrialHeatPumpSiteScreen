@@ -1,26 +1,61 @@
 # IndustrialHeatPumpSiteScreen
 
-A research-oriented, **preliminary industrial-site screening tool** for high-temperature heat-pump integration.
+**Version 1.0.0 — reproducible, synthetic industrial heat-integration research prototype.**
 
-**Status:** v0.1 research prototype under development. No field measurements, validated compressor map, vendor quotation, process-integration optimisation or industrial certification are claimed.
+[![CI](https://github.com/Open-Energy-Methods/IndustrialHeatPumpSiteScreen/actions/workflows/v1-methodological.yml/badge.svg)](https://github.com/Open-Energy-Methods/IndustrialHeatPumpSiteScreen/actions/workflows/v1-methodological.yml)
 
-The project addresses a different question from [CarnotBatteryLab](https://github.com/Open-Energy-Methods/CarnotBatteryLab): **At which industrial sites could a high-temperature heat pump be thermodynamically and economically worth investigating?** The present screen is not a verified site-design tool.
+**Scientific status:** Verified software arithmetic and analytical limiting cases; **not** validated industrial energy performance, equipment design, actual economic viability, or a qualified compressor map.
 
-## Research scope
-- Reproducible batch screening of synthetic industrial sites with heat-source and heat-demand constraints.
-- Transparent, bounded Carnot-fraction **COP proxy** (not a fluid-specific performance map).
-- Heating duty, heat recovered, compressor electricity, residual boiler fuel.
-- Conditional annual net savings and installed-CAPEX break-even ceiling.
-- Explicit feasibility/rejection reasons and reproducible tests.
+This is a separate research work sample oriented toward the **DTU Construct HeatMinds PhD on industrial integration of high-temperature heat pumps (job 8486)**. [CarnotBatteryLab](https://github.com/Open-Energy-Methods/CarnotBatteryLab) instead studies thermodynamic architecture and thermal storage, relevant to job 8487. This work is **independent** and does not imply DTU affiliation, endorsement or sponsorship.
 
-Future work may add validated R600/R600a or R718 compressor data, process pinch analysis, site uncertainty distributions, dispatch optimisation, equipment pricing and independent experimental validation. None of these are implemented in v0.1.
+## What v1.0 actually computes
 
-## Reproducibility
-Use Python 3.11+ and install locally with `python -m pip install -e .`. Run
-`python -m unittest discover -s tests -v` and
-`python -m site_screen.cli data/synthetic_sites.csv --output results/synthetic_screen.json`.
+1. **Multi-stream process heat recovery:** Classical shifted-temperature / problem-table pinch analysis. It reports ideal minimum hot and cold utilities and recoverable process heat for an assumed ΔTmin; it does not design the exchanger network.
+2. **Separated heat-pump source:** The HP evaporator's waste-heat source is explicit and independent from the hot streams already credited to process-to-process heat recovery.
+3. **Site-level conditional heat-pump integration:** Carnot-fraction COP proxy and source heat, nameplate, process supply-temperature, boiler-backup and first-law constraints.
+4. **Price-aware operation:** Deterministic ON/OFF dispatch in independent annual tariff blocks, with compressor and assumed auxiliary electricity and a boiler supplying all residual heat. No chronological storage, process ramps or equipment turndown models.
+5. **Economic threshold:** Annual fuel displaced, electricity cost, discounted operating savings and *maximum incremental installed CAPEX supported*. This is **not** a supplier quote or proof of investment profitability.
+6. **Scenario sensitivity:** Full-factorial enumerations of theoretical COP fraction, HP nameplate, electricity prices and process ΔTmin. Non-dominated capacities are evaluated only under matched price/efficiency/pinch conditions; not a probability distribution or a whole-site co-optimisation.
 
-**All distributed sites are synthetic.** See [method and assumptions](docs/methodology.md) and [validation plan](docs/validation_plan.md).
+**Never describe this code as a measured R718/R600/R600a model.** It deliberately does not import CarnotBatteryLab's preliminary working-fluid cycle calculations. External measurements, independent compressor holdouts and actual process data are required for equipment conclusions.
 
-## Research context
-Built independently as a portfolio research prototype relevant to **DTU Construct, HeatMinds PhD job 8486** (industrial HTHP integration), not as an institutionally approved DTU project or demonstration of industrial performance.
+## Reproduce
+
+Python 3.11+ (stdlib only):
+
+```bash
+python -m pip install -e .
+python -m unittest discover -s tests -v
+
+# Legacy v0.1 single-stream CSV screen (backward compatible)
+python -m site_screen.cli data/synthetic_sites.csv --output results/legacy.json
+
+# v1.0 multi-stream process, economics and tariff sensitivity
+python -m site_screen.research_cli \
+  --input data/synthetic_process_sites.json \
+  --output results/v1_process_screen.json \
+  --scenarios
+```
+
+The v1.0 fixture contains three explicitly **synthetic** sites with independent waste-heat streams and 162 predeclared scenario combinations. CI tests both Python 3.11 and 3.12, validates first-law/process balances, retains rejection cases and checks JSON byte-for-byte determinism.
+
+## Output interpretation
+
+- `minimum_external_heating_kW`: theoretical pinch utility after *ideal* internal heat recovery.
+- `maximum_internal_process_heat_recovery_kW`: process hot-to-cold transfer target, not installed exchanger performance.
+- `independent_source`: waste heat excluded from internal process recovery so it cannot be double counted.
+- `assumed_COP`: heuristic fractional-Carnot screen, not compressor-map prediction.
+- `hp_delivered_kW`, `hp_compressor_electric_kW`, `boiler_remaining_kW`: conditional heating service, with balanced source energy.
+- `annual_net_savings_eur`: scenario-specific incremental operating savings relative to the *same ideal recovery network*.
+- `break_even_incremental_installed_capex_eur`: PV ceiling for an unknown investment cost, not observed market price.
+- `non_dominated_within_identical_assumptions`: multi-criterion scenario screening among nameplate choices only.
+
+## Scientific documentation
+
+- [Methods, boundary conditions and literature](docs/v1_methods.md)
+- [Release evidence and unvalidated gates](docs/v1_release_checklist.md)
+- [Independent site/equipment validation plan](docs/validation_plan.md)
+- [Further research milestones](https://github.com/Open-Energy-Methods/IndustrialHeatPumpSiteScreen/issues/2)
+- [Synthetic source data](data/synthetic_process_sites.json)
+
+The program has a deliberately narrow **software-v1.0** definition. A validated industrial screening tool would require process stream measurements, uncertainties, compressor envelopes and controlled experiments. Green CI alone does not confer that validity.
